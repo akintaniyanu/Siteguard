@@ -1,0 +1,22 @@
+SITEGUARD TEST LOG
+==================
+
+Test 1
+Domain: example.com
+Result: PASS
+Problem: None
+
+Test 2
+Domain: google.com
+Result: PASS
+Problem: None
+
+Test 3
+Domain: hello
+Result: PASS
+Problem: Correctly rejected
+
+Test 4
+Domain: 123
+Result: PASS
+Problem: Correctly rejected

@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SiteGuard - Website Security Scanner</title>
+
+
+    <style>
+
+        /* =========================
+           GLOBAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            padding: 20px;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f4f6f8;
+
+            color: #1f2937;
+
+            min-height: 100vh;
+
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 760px;
+
+            margin: 0 auto;
+
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+
+            text-align: center;
+
+            padding: 30px 10px;
+
+        }
+
+
+        .logo {
+
+            font-size: 42px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .header h1 {
+
+            margin: 0;
+
+            font-size: 32px;
+
+            letter-spacing: -1px;
+
+        }
+
+
+        .header p {
+
+            margin-top: 10px;
+
+            color: #6b7280;
+
+            font-size: 15px;
+
+        }
+
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .card {
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.06);
+
+        }
+
+
+        .card h2 {
+
+            margin-top: 0;
+
+            margin-bottom: 20px;
+
+            font-size: 20px;
+
+        }
+
+
+        /* =========================
+           SCAN FORM
+        ========================= */
+
+        .input-label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border:
+                1px solid #d1d5db;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            outline: none;
+
+            transition:
+                border 0.2s;
+
+        }
+
+
+        input:focus {
+
+            border-color: #111827;
+
+        }
+
+
+        input::placeholder {
+
+            color: #9ca3af;
+
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        button {
+
+            width: 100%;
+
+            padding: 15px;
+
+            margin-top: 12px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #111827;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition:
+                opacity 0.2s,
+                transform 0.1s;
+
+        }
+
+
+        button:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+        button:active {
+
+            transform: scale(0.98);
+
+        }
+
+
+        button:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================= */
+
+        .message {
+
+            padding: 13px;
+
+            margin-top: 15px;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+
+            text-align: center;
+
+        }
+
+
+        .error {
+
+            background: #fee2e2;
+
+            color: #991b1b;
+
+        }
+
+
+        .success {
+
+            background: #dcfce7;
+
+            color: #166534;
+
+        }
+
+
+        /* =========================
+           SCORE
+        ========================= */
+
+        .score-card {
+
+            text-align: center;
+
+        }
+
+
+        .score {
+
+            font-size: 64px;
+
+            font-weight: bold;
+
+            margin: 15px 0;
+
+            letter-spacing: -2px;
+
+        }
+
+
+        .score-label {
+
+            color: #6b7280;
+
+            font-size: 14px;
+
+        }
+
+
+        .scanned-domain {
+
+            margin-top: 8px;
+
+            font-weight: bold;
+
+            word-break: break-word;
+
+        }
+
+
+        /* =========================
+           SECURITY CHECKS
+        ========================= */
+
+        .checks {
+
+            margin-top: 25px;
+
+        }
+
+
+        .checks h3 {
+
+            margin-bottom: 10px;
+
+            font-size: 17px;
+
+        }
+
+
+        .result-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 14px 0;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            font-size: 15px;
+
+        }
+
+
+        .result-item:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .result-name {
+
+            font-weight: 500;
+
+        }
+
+
+        .result-status {
+
+            font-weight: bold;
+
+        }
+
+
+        /* =========================
+           HISTORY
+        ========================= */
+
+        .history-item {
+
+            padding: 15px 0;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+        }
+
+
+        .history-item:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .history-domain {
+
+            font-weight: bold;
+
+            font-size: 16px;
+
+            word-break: break-word;
+
+        }
+
+
+        .history-score {
+
+            margin-top: 5px;
+
+            font-weight: bold;
+
+        }
+
+
+        .history-date {
+
+            margin-top: 5px;
+
+            color: #9ca3af;
+
+            font-size: 13px;
+
+        }
+
+
+        .loading {
+
+            text-align: center;
+
+            padding: 15px;
+
+            color: #6b7280;
+
+        }
+
+
+        .empty {
+
+            text-align: center;
+
+            padding: 15px;
+
+            color: #6b7280;
+
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+
+            text-align: center;
+
+            color: #9ca3af;
+
+            font-size: 13px;
+
+            padding: 20px;
+
+        }
+
+
+        /* =========================
+           HIDDEN
+        ========================= */
+
+        .hidden {
+
+            display: none;
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 12px;
+
+            }
+
+
+            .header {
+
+                padding: 20px 5px;
+
+            }
+
+
+            .logo {
+
+                font-size: 36px;
+
+            }
+
+
+            .header h1 {
+
+                font-size: 28px;
+
+            }
+
+
+            .card {
+
+                padding: 20px;
+
+                border-radius: 14px;
+
+            }
+
+
+            .score {
+
+                font-size: 52px;
+
+            }
+
+
+            .result-item {
+
+                font-size: 14px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="header">
+
+        <div class="logo">
+            🛡️
+        </div>
+
+
+        <h1>
+            SiteGuard
+        </h1>
+
+
+        <p>
+            Website Security Scanner
+        </p>
+
+    </header>
+
+
+
+    <!-- =========================
+         SCAN CARD
+    ========================== -->
+
+    <div class="card">
+
+        <h2>
+            Scan a Website
+        </h2>
+
+
+        <label
+            class="input-label"
+            for="domain"
+        >
+            Website Domain
+        </label>
+
+
+        <input
+            type="text"
+            id="domain"
+            placeholder="example.com"
+            autocomplete="off"
+        >
+
+
+        <button
+            id="scanButton"
+            onclick="scanWebsite()"
+        >
+            SCAN WEBSITE
+        </button>
+
+
+        <div
+            id="errorMessage"
+            class="message error hidden"
+        ></div>
+
+    </div>
+
+
+
+    <!-- =========================
+         SCORE CARD
+    ========================== -->
+
+    <div
+        class="card score-card hidden"
+        id="results"
+    >
+
+        <h2>
+            Security Score
+        </h2>
+
+
+        <div
+            class="score"
+            id="score"
+        >
+            --/100
+        </div>
+
+
+        <div class="score-label">
+            Scanned Website
+        </div>
+
+
+        <div
+            class="scanned-domain"
+            id="scannedDomain"
+        >
+            --
+        </div>
+
+
+
+        <!-- =========================
+             SECURITY CHECKS
+        ========================== -->
+
+        <div
+            class="checks hidden"
+            id="findings"
+        >
+
+            <h3>
+                Security Checks
+            </h3>
+
+
+            <div class="result-item">
+
+                <span class="result-name">
+                    HTTPS
+                </span>
+
+                <span
+                    class="result-status"
+                    id="httpsResult"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="result-item">
+
+                <span class="result-name">
+                    TLS Certificate
+                </span>
+
+                <span
+                    class="result-status"
+                    id="tlsResult"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="result-item">
+
+                <span class="result-name">
+                    Security Headers
+                </span>
+
+                <span
+                    class="result-status"
+                    id="headersResult"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="result-item">
+
+                <span class="result-name">
+                    Cookies
+                </span>
+
+                <span
+                    class="result-status"
+                    id="cookiesResult"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="result-item">
+
+                <span class="result-name">
+                    DNS
+                </span>
+
+                <span
+                    class="result-status"
+                    id="dnsResult"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="result-item">
+
+                <span class="result-name">
+                    SPF
+                </span>
+
+                <span
+                    class="result-status"
+                    id="spfResult"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="result-item">
+
+                <span class="result-name">
+                    DMARC
+                </span>
+
+                <span
+                    class="result-status"
+                    id="dmarcResult"
+                >
+                    --
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         SCAN HISTORY
+    ========================== -->
+
+    <div class="card">
+
+        <h2>
+            Scan History
+        </h2>
+
+
+        <div
+            id="history"
+            class="loading"
+        >
+            Loading history...
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <div class="footer">
+
+        SiteGuard v0.1
+
+        <br>
+
+        Website Security Scanner
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+// ==========================================
+// SCAN WEBSITE
+// ==========================================
+
+async function scanWebsite() {
+
+
+    const domainInput =
+        document.getElementById(
+            "domain"
+        );
+
+
+    const domain =
+        domainInput.value.trim();
+
+
+    const scanButton =
+        document.getElementById(
+            "scanButton"
+        );
+
+
+    const results =
+        document.getElementById(
+            "results"
+        );
+
+
+    const score =
+        document.getElementById(
+            "score"
+        );
+
+
+    const scannedDomain =
+        document.getElementById(
+            "scannedDomain"
+        );
+
+
+    const errorMessage =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    // Clear previous error
+
+    errorMessage.classList.add(
+        "hidden"
+    );
+
+
+    // Check empty input
+
+    if (!domain) {
+
+        errorMessage.textContent =
+            "Please enter a domain.";
+
+        errorMessage.classList.remove(
+            "hidden"
+        );
+
+        return;
+
+    }
+
+
+    // Show results
+
+    results.classList.remove(
+        "hidden"
+    );
+
+
+    // Show scanning status
+
+    score.textContent =
+        "Scanning...";
+
+
+    scannedDomain.textContent =
+        domain;
+
+
+    // Disable button
+
+    scanButton.disabled =
+        true;
+
+
+    scanButton.textContent =
+        "SCANNING...";
+
+
+    try {
+
+
+        // Send domain to API
+
+        const response =
+            await fetch(
+                "/scan",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        domain: domain
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        // API returned an error
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Scan failed."
+            );
+
+        }
+
+
+        // Display score
+
+        score.textContent =
+            data.score +
+            "/100";
+
+
+        // Display findings
+
+        if (data.results) {
+
+
+            document
+                .getElementById(
+                    "findings"
+                )
+                .classList.remove(
+                    "hidden"
+                );
+
+
+            updateResult(
+                "httpsResult",
+                data.results.https
+            );
+
+
+            updateResult(
+                "tlsResult",
+                data.results.tls
+            );
+
+
+            updateResult(
+                "headersResult",
+                data.results.headers
+            );
+
+
+            updateResult(
+                "cookiesResult",
+                data.results.cookies
+            );
+
+
+            updateResult(
+                "dnsResult",
+                data.results.dns
+            );
+
+
+            updateResult(
+                "spfResult",
+                data.results.spf
+            );
+
+
+            updateResult(
+                "dmarcResult",
+                data.results.dmarc
+            );
+
+        }
+
+
+        // Refresh history
+
+        loadHistory();
+
+
+    } catch (error) {
+
+
+        score.textContent =
+            "--/100";
+
+
+        errorMessage.textContent =
+            error.message ||
+            "Unable to scan website.";
+
+
+        errorMessage.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    // Enable button
+
+    scanButton.disabled =
+        false;
+
+
+    scanButton.textContent =
+        "SCAN WEBSITE";
+
+}
+
+
+
+// ==========================================
+// UPDATE SECURITY RESULT
+// ==========================================
+
+function updateResult(
+    elementId,
+    value
+) {
+
+
+    const element =
+        document.getElementById(
+            elementId
+        );
+
+
+    if (
+        value === undefined ||
+        value === null
+    ) {
+
+        element.textContent =
+            "--";
+
+        return;
+
+    }
+
+
+    if (value === true) {
+
+        element.textContent =
+            "✅ PASS";
+
+        return;
+
+    }
+
+
+    if (value === false) {
+
+        element.textContent =
+            "❌ FAIL";
+
+        return;
+
+    }
+
+
+    element.textContent =
+        value;
+
+}
+
+
+
+// ==========================================
+// LOAD SCAN HISTORY
+// ==========================================
+
+async function loadHistory() {
+
+
+    const history =
+        document.getElementById(
+            "history"
+        );
+
+
+    history.className =
+        "loading";
+
+
+    history.textContent =
+        "Loading history...";
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/history"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load history."
+            );
+
+        }
+
+
+        const scans =
+            await response.json();
+
+
+        // No scan history
+
+        if (
+            !scans ||
+            scans.length === 0
+        ) {
+
+            history.className =
+                "empty";
+
+            history.textContent =
+                "No previous scans.";
+
+            return;
+
+        }
+
+
+        // Clear history
+
+        history.innerHTML =
+            "";
+
+
+        history.className =
+            "";
+
+
+        // Display scans
+
+        scans.forEach(
+            function(scan) {
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "history-item";
+
+
+                const domain =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                domain.className =
+                    "history-domain";
+
+
+                domain.textContent =
+                    scan.domain;
+
+
+                const score =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                score.className =
+                    "history-score";
+
+
+                score.textContent =
+                    "Score: " +
+                    scan.score +
+                    "/100";
+
+
+                const date =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                date.className =
+                    "history-date";
+
+
+                date.textContent =
+                    scan.scanned_at;
+
+
+                item.appendChild(
+                    domain
+                );
+
+
+                item.appendChild(
+                    score
+                );
+
+
+                item.appendChild(
+                    date
+                );
+
+
+                history.appendChild(
+                    item
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+
+        history.className =
+            "empty";
+
+
+        history.textContent =
+            "Unable to load scan history.";
+
+    }
+
+}
+
+
+
+// ==========================================
+// LOAD HISTORY WHEN PAGE OPENS
+// ==========================================
+
+loadHistory();
+
+
+</script>
+
+
+</body>
+
+</html>
