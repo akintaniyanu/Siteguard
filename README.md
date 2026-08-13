@@ -86,6 +86,11 @@ It is intended for authorized testing and learning purposes only.
 - Web interface
 - More automated checks
 
+screenshots/
+├── siteguard-https.png
+├── certificate-check.png
+├── security-result.png
+└── terminal-output.png
 
 # Roadmap
 
