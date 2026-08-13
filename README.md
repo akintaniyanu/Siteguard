@@ -85,3 +85,30 @@ It is intended for authorized testing and learning purposes only.
 - Better reporting
 - Web interface
 - More automated checks
+
+
+# Roadmap
+
+## Stage 1 — Foundation
+- [x] Accept website URL
+- [x] Check connectivity
+- [x] Detect HTTPS
+- [x] Inspect certificate
+
+## Stage 2 — Security Checks
+- [ ] Security headers
+- [ ] Certificate expiration warnings
+- [ ] Redirect checks
+- [ ] Cookie security checks
+
+## Stage 3 — Security Assessment
+- [ ] Security scoring
+- [ ] Risk levels
+- [ ] Recommendations
+- [ ] Improved reporting
+
+## Stage 4 — MVP
+- [ ] Clean interface
+- [ ] Automated testing
+- [ ] Documentation
+- [ ] Deployment
